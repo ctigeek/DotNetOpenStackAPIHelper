@@ -45,6 +45,10 @@ namespace OpenStackAPIHelper
                 {
                     this.lbServers.Items.Add(server);
                 }
+                if (this.lbServers.Items.Count > 0)
+                {
+                    this.lbServers.SelectedIndex = 0;
+                }
             }
             catch (System.Net.WebException webex)
             {
@@ -145,6 +149,10 @@ namespace OpenStackAPIHelper
                 {
                     this.lbImages.Items.Add(image);
                 }
+                if (this.lbImages.Items.Count > 0)
+                {
+                    this.lbImages.SelectedIndex = 0;
+                }
             }
             catch (System.Net.WebException webex)
             {
@@ -209,17 +217,103 @@ namespace OpenStackAPIHelper
 
         }
         #endregion
+        #region Flavors
+        private void bRetrieveFlavors_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                this.Cursor = Cursors.WaitCursor;
+                System.Windows.Forms.Application.DoEvents();
+
+                LoadAuth();
+                var flavors = GetFlavors();
+                this.lbFlavors.Items.Clear();
+                foreach (var flavor in flavors.FlavorList)
+                {
+                    this.lbFlavors.Items.Add(flavor);
+                }
+                if (this.lbFlavors.Items.Count > 0)
+                {
+                    this.lbFlavors.SelectedIndex = 0;
+                }
+            }
+            catch (System.Net.WebException webex)
+            {
+                this.tbServerDetails.Text = webex.ToString() + "\r\n" + ResponseDebugString((HttpWebResponse)webex.Response);
+            }
+            catch (Exception ex)
+            {
+                this.tbServerDetails.Text = ex.ToString();
+            }
+            finally
+            {
+                this.Cursor = Cursors.Default;
+            }
+        }
+        private void lbFlavors_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                var flavor = (Entities.ServerImage)this.lbFlavors.SelectedItem;
+
+                this.tbServerDetails.Text = string.Format("^^^^^^^^^ Flavor ^^^^^^^^^^^^\r\nName={0}\r\nID={1}\r\nLink={2}\r\n", flavor.Name, flavor.Id, flavor.Links[0].Href);
+                if (!string.IsNullOrEmpty(flavor.DetailJson))
+                {
+                    this.tbServerDetails.Text += flavor.DetailJson;
+                }
+            }
+            catch (Exception ex)
+            {
+                this.tbServerDetails.Text = ex.ToString();
+            }
+        }
+        private void lbFlavors_DoubleClick(object sender, EventArgs e)
+        {
+            try
+            {
+                this.Cursor = Cursors.WaitCursor;
+                System.Windows.Forms.Application.DoEvents();
+                object obj = this.lbFlavors.SelectedItem;
+                if (obj != null)
+                {
+                    var flavor = (Entities.ServerImage)obj;
+                    string result = GetFlavorDetail(flavor.Id);
+                    flavor.DetailJson = FormatJson(result);
+                    lbFlavors_SelectedIndexChanged(sender, e);
+                }
+            }
+            catch (System.Net.WebException webex)
+            {
+                this.tbServerDetails.Text = webex.ToString() + "\r\n" + ResponseDebugString((HttpWebResponse)webex.Response);
+            }
+            catch (Exception ex)
+            {
+                this.tbServerDetails.Text = ex.ToString();
+            }
+            finally
+            {
+                this.Cursor = Cursors.Default;
+            }
+        }
+        #endregion
         #region GET tab
         private void tbUrl_DoubleClick(object sender, EventArgs e)
         {
-            LoadAuth();
-            this.tbGetUrl.Text = computeUrl;
+            try
+            {
+                LoadAuth();
+                this.tbGetUrl.Text = computeUrl;
+            }
+            catch (Exception ex)
+            {
+                this.tbGetResults.Text = ex.ToString();
+            }
         }
-
         private void bGetURL_Click(object sender, EventArgs e)
         {
             try
             {
+                LoadAuth();
                 if (!this.tbGetUrl.Text.StartsWith(this.computeUrl))
                 {
                     MessageBox.Show("URL must start with the Openstack endpoint. Double-click in the text box to set it.");
@@ -241,7 +335,6 @@ namespace OpenStackAPIHelper
         }
 
         #endregion
-
 
         #region ServersAPI
         private Entities.Servers GetServers()
@@ -309,6 +402,26 @@ namespace OpenStackAPIHelper
         private string GetImageDetail(string imageId)
         {
             string url = computeUrl + "/images/" + imageId;
+            var response = MakeRequest(null, url, "GET", this.Access.Token.tokenString);
+            string result = GetStringFromStream(response.GetResponseStream());
+            return result;
+        }
+        #endregion
+        #region Flavors API
+        private Entities.Flavors GetFlavors()
+        {
+            string url = computeUrl + "/flavors";
+            var response = MakeRequest(null, url, "GET", this.Access.Token.tokenString);
+            Entities.Flavors flavors = null;
+            using (var responseStream = response.GetResponseStream())
+            {
+                flavors = DeserializeJson<Entities.Flavors>(responseStream);
+            }
+            return flavors;
+        }
+        private string GetFlavorDetail(string flavorId)
+        {
+            string url = computeUrl + "/flavors/" + flavorId;
             var response = MakeRequest(null, url, "GET", this.Access.Token.tokenString);
             string result = GetStringFromStream(response.GetResponseStream());
             return result;
@@ -535,6 +648,7 @@ namespace OpenStackAPIHelper
             return sb.ToString();
         }
 
+        
         
     }
 }
