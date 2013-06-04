@@ -68,9 +68,12 @@
             this.bGetServers = new System.Windows.Forms.Button();
             this.lbServers = new System.Windows.Forms.ListBox();
             this.tabGet = new System.Windows.Forms.TabPage();
+            this.toolStrip1 = new System.Windows.Forms.ToolStrip();
+            this.toolStripSplitButtonGET = new System.Windows.Forms.ToolStripSplitButton();
+            this.toolStripMenuItemLimits = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItemServers = new System.Windows.Forms.ToolStripMenuItem();
             this.label1 = new System.Windows.Forms.Label();
             this.tbGetResults = new System.Windows.Forms.TextBox();
-            this.bGetURL = new System.Windows.Forms.Button();
             this.tbGetUrl = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
             this.tabPost = new System.Windows.Forms.TabPage();
@@ -95,24 +98,18 @@
             this.bDelete = new System.Windows.Forms.Button();
             this.tbDeleteUrl = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
-            this.contextMenuGET = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-            this.serversToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.imagesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStrip1 = new System.Windows.Forms.ToolStrip();
-            this.toolStripSplitButtonGET = new System.Windows.Forms.ToolStripSplitButton();
-            this.toolStripMenuItemLimits = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItemServers = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItemExtensions = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItemImages = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItemFlavors = new System.Windows.Forms.ToolStripMenuItem();
             this.tabControl1.SuspendLayout();
             this.tabCompute.SuspendLayout();
             this.contextMenuServers.SuspendLayout();
             this.contextMenuImages.SuspendLayout();
             this.tabGet.SuspendLayout();
+            this.toolStrip1.SuspendLayout();
             this.tabPost.SuspendLayout();
             this.tabPut.SuspendLayout();
             this.tabDelete.SuspendLayout();
-            this.contextMenuGET.SuspendLayout();
-            this.toolStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // button1
@@ -185,9 +182,9 @@
             this.lbFlavors.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.lbFlavors.ContextMenuStrip = this.contextMenuServers;
             this.lbFlavors.FormattingEnabled = true;
-            this.lbFlavors.Location = new System.Drawing.Point(521, 35);
+            this.lbFlavors.Location = new System.Drawing.Point(578, 35);
             this.lbFlavors.Name = "lbFlavors";
-            this.lbFlavors.Size = new System.Drawing.Size(319, 186);
+            this.lbFlavors.Size = new System.Drawing.Size(262, 186);
             this.lbFlavors.TabIndex = 11;
             this.lbFlavors.SelectedIndexChanged += new System.EventHandler(this.lbFlavors_SelectedIndexChanged);
             this.lbFlavors.DoubleClick += new System.EventHandler(this.lbFlavors_DoubleClick);
@@ -354,7 +351,7 @@
             this.lbImages.FormattingEnabled = true;
             this.lbImages.Location = new System.Drawing.Point(289, 34);
             this.lbImages.Name = "lbImages";
-            this.lbImages.Size = new System.Drawing.Size(226, 186);
+            this.lbImages.Size = new System.Drawing.Size(283, 186);
             this.lbImages.TabIndex = 10;
             this.lbImages.SelectedIndexChanged += new System.EventHandler(this.lbImages_SelectedIndexChanged);
             this.lbImages.DoubleClick += new System.EventHandler(this.lbImages_DoubleClick);
@@ -436,7 +433,6 @@
             this.tabGet.Controls.Add(this.toolStrip1);
             this.tabGet.Controls.Add(this.label1);
             this.tabGet.Controls.Add(this.tbGetResults);
-            this.tabGet.Controls.Add(this.bGetURL);
             this.tabGet.Controls.Add(this.tbGetUrl);
             this.tabGet.Controls.Add(this.label5);
             this.tabGet.Location = new System.Drawing.Point(4, 22);
@@ -446,6 +442,50 @@
             this.tabGet.TabIndex = 1;
             this.tabGet.Text = "GET";
             this.tabGet.UseVisualStyleBackColor = true;
+            // 
+            // toolStrip1
+            // 
+            this.toolStrip1.Dock = System.Windows.Forms.DockStyle.None;
+            this.toolStrip1.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
+            this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripSplitButtonGET});
+            this.toolStrip1.Location = new System.Drawing.Point(708, 6);
+            this.toolStrip1.Name = "toolStrip1";
+            this.toolStrip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
+            this.toolStrip1.Size = new System.Drawing.Size(58, 25);
+            this.toolStrip1.TabIndex = 11;
+            this.toolStrip1.Text = "toolStrip1";
+            // 
+            // toolStripSplitButtonGET
+            // 
+            this.toolStripSplitButtonGET.AutoSize = false;
+            this.toolStripSplitButtonGET.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.toolStripSplitButtonGET.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripMenuItemExtensions,
+            this.toolStripMenuItemFlavors,
+            this.toolStripMenuItemImages,
+            this.toolStripMenuItemLimits,
+            this.toolStripMenuItemServers});
+            this.toolStripSplitButtonGET.Image = ((System.Drawing.Image)(resources.GetObject("toolStripSplitButtonGET.Image")));
+            this.toolStripSplitButtonGET.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripSplitButtonGET.Name = "toolStripSplitButtonGET";
+            this.toolStripSplitButtonGET.Size = new System.Drawing.Size(55, 22);
+            this.toolStripSplitButtonGET.Text = "GET";
+            this.toolStripSplitButtonGET.ButtonClick += new System.EventHandler(this.toolStripSplitButtonGET_ButtonClick);
+            // 
+            // toolStripMenuItemLimits
+            // 
+            this.toolStripMenuItemLimits.Name = "toolStripMenuItemLimits";
+            this.toolStripMenuItemLimits.Size = new System.Drawing.Size(152, 22);
+            this.toolStripMenuItemLimits.Text = "limits";
+            this.toolStripMenuItemLimits.Click += new System.EventHandler(this.toolStripMenuItem_Click);
+            // 
+            // toolStripMenuItemServers
+            // 
+            this.toolStripMenuItemServers.Name = "toolStripMenuItemServers";
+            this.toolStripMenuItemServers.Size = new System.Drawing.Size(152, 22);
+            this.toolStripMenuItemServers.Text = "servers";
+            this.toolStripMenuItemServers.Click += new System.EventHandler(this.toolStripMenuItem_Click);
             // 
             // label1
             // 
@@ -461,6 +501,7 @@
             this.tbGetResults.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.tbGetResults.Font = new System.Drawing.Font("Courier New", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tbGetResults.Location = new System.Drawing.Point(6, 52);
             this.tbGetResults.Multiline = true;
             this.tbGetResults.Name = "tbGetResults";
@@ -468,22 +509,11 @@
             this.tbGetResults.Size = new System.Drawing.Size(834, 475);
             this.tbGetResults.TabIndex = 9;
             // 
-            // bGetURL
-            // 
-            this.bGetURL.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.bGetURL.ContextMenuStrip = this.contextMenuGET;
-            this.bGetURL.Location = new System.Drawing.Point(417, 26);
-            this.bGetURL.Name = "bGetURL";
-            this.bGetURL.Size = new System.Drawing.Size(108, 23);
-            this.bGetURL.TabIndex = 6;
-            this.bGetURL.Text = "GET";
-            this.bGetURL.UseVisualStyleBackColor = true;
-            this.bGetURL.Click += new System.EventHandler(this.bGetURL_Click);
-            // 
             // tbGetUrl
             // 
             this.tbGetUrl.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.tbGetUrl.Font = new System.Drawing.Font("Courier New", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tbGetUrl.Location = new System.Drawing.Point(67, 6);
             this.tbGetUrl.Name = "tbGetUrl";
             this.tbGetUrl.Size = new System.Drawing.Size(627, 20);
@@ -529,6 +559,7 @@
             this.tbPostBody.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.tbPostBody.Font = new System.Drawing.Font("Courier New", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tbPostBody.Location = new System.Drawing.Point(3, 43);
             this.tbPostBody.Multiline = true;
             this.tbPostBody.Name = "tbPostBody";
@@ -550,6 +581,7 @@
             // 
             this.tbPostResults.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.tbPostResults.Font = new System.Drawing.Font("Courier New", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tbPostResults.Location = new System.Drawing.Point(6, 248);
             this.tbPostResults.Multiline = true;
             this.tbPostResults.Name = "tbPostResults";
@@ -566,11 +598,13 @@
             this.bPost.TabIndex = 9;
             this.bPost.Text = "POST";
             this.bPost.UseVisualStyleBackColor = true;
+            this.bPost.Click += new System.EventHandler(this.bPost_Click);
             // 
             // tbPostUrl
             // 
             this.tbPostUrl.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.tbPostUrl.Font = new System.Drawing.Font("Courier New", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tbPostUrl.Location = new System.Drawing.Point(47, 3);
             this.tbPostUrl.Name = "tbPostUrl";
             this.tbPostUrl.Size = new System.Drawing.Size(683, 20);
@@ -615,6 +649,7 @@
             this.tbPutBody.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.tbPutBody.Font = new System.Drawing.Font("Courier New", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tbPutBody.Location = new System.Drawing.Point(3, 43);
             this.tbPutBody.Multiline = true;
             this.tbPutBody.Name = "tbPutBody";
@@ -636,6 +671,7 @@
             // 
             this.tbPutResults.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.tbPutResults.Font = new System.Drawing.Font("Courier New", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tbPutResults.Location = new System.Drawing.Point(6, 248);
             this.tbPutResults.Multiline = true;
             this.tbPutResults.Name = "tbPutResults";
@@ -652,11 +688,13 @@
             this.bPut.TabIndex = 9;
             this.bPut.Text = "PUT";
             this.bPut.UseVisualStyleBackColor = true;
+            this.bPut.Click += new System.EventHandler(this.bPut_Click);
             // 
             // tbPutUrl
             // 
             this.tbPutUrl.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.tbPutUrl.Font = new System.Drawing.Font("Courier New", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tbPutUrl.Location = new System.Drawing.Point(48, 3);
             this.tbPutUrl.Name = "tbPutUrl";
             this.tbPutUrl.Size = new System.Drawing.Size(683, 20);
@@ -699,6 +737,7 @@
             this.tbDeleteResults.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.tbDeleteResults.Font = new System.Drawing.Font("Courier New", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tbDeleteResults.Location = new System.Drawing.Point(6, 52);
             this.tbDeleteResults.Multiline = true;
             this.tbDeleteResults.Name = "tbDeleteResults";
@@ -715,11 +754,13 @@
             this.bDelete.TabIndex = 9;
             this.bDelete.Text = "DELETE";
             this.bDelete.UseVisualStyleBackColor = true;
+            this.bDelete.Click += new System.EventHandler(this.bDelete_Click);
             // 
             // tbDeleteUrl
             // 
             this.tbDeleteUrl.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.tbDeleteUrl.Font = new System.Drawing.Font("Courier New", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tbDeleteUrl.Location = new System.Drawing.Point(52, 3);
             this.tbDeleteUrl.Name = "tbDeleteUrl";
             this.tbDeleteUrl.Size = new System.Drawing.Size(683, 20);
@@ -734,70 +775,26 @@
             this.label6.TabIndex = 7;
             this.label6.Text = "URL";
             // 
-            // contextMenuGET
+            // toolStripMenuItemExtensions
             // 
-            this.contextMenuGET.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripMenuItem1,
-            this.serversToolStripMenuItem,
-            this.imagesToolStripMenuItem});
-            this.contextMenuGET.Name = "contextMenuImages";
-            this.contextMenuGET.Size = new System.Drawing.Size(113, 70);
+            this.toolStripMenuItemExtensions.Name = "toolStripMenuItemExtensions";
+            this.toolStripMenuItemExtensions.Size = new System.Drawing.Size(152, 22);
+            this.toolStripMenuItemExtensions.Text = "extensions";
+            this.toolStripMenuItemExtensions.Click += new System.EventHandler(this.toolStripMenuItem_Click);
             // 
-            // toolStripMenuItem1
+            // toolStripMenuItemImages
             // 
-            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(112, 22);
-            this.toolStripMenuItem1.Text = "Limits";
+            this.toolStripMenuItemImages.Name = "toolStripMenuItemImages";
+            this.toolStripMenuItemImages.Size = new System.Drawing.Size(152, 22);
+            this.toolStripMenuItemImages.Text = "images";
+            this.toolStripMenuItemImages.Click += new System.EventHandler(this.toolStripMenuItem_Click);
             // 
-            // serversToolStripMenuItem
+            // toolStripMenuItemFlavors
             // 
-            this.serversToolStripMenuItem.Name = "serversToolStripMenuItem";
-            this.serversToolStripMenuItem.Size = new System.Drawing.Size(112, 22);
-            this.serversToolStripMenuItem.Text = "Servers";
-            // 
-            // imagesToolStripMenuItem
-            // 
-            this.imagesToolStripMenuItem.Name = "imagesToolStripMenuItem";
-            this.imagesToolStripMenuItem.Size = new System.Drawing.Size(112, 22);
-            this.imagesToolStripMenuItem.Text = "Images";
-            // 
-            // toolStrip1
-            // 
-            this.toolStrip1.Dock = System.Windows.Forms.DockStyle.None;
-            this.toolStrip1.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
-            this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripSplitButtonGET});
-            this.toolStrip1.Location = new System.Drawing.Point(708, 6);
-            this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
-            this.toolStrip1.Size = new System.Drawing.Size(58, 25);
-            this.toolStrip1.TabIndex = 11;
-            this.toolStrip1.Text = "toolStrip1";
-            // 
-            // toolStripSplitButtonGET
-            // 
-            this.toolStripSplitButtonGET.AutoSize = false;
-            this.toolStripSplitButtonGET.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.toolStripSplitButtonGET.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripMenuItemLimits,
-            this.toolStripMenuItemServers});
-            this.toolStripSplitButtonGET.Image = ((System.Drawing.Image)(resources.GetObject("toolStripSplitButtonGET.Image")));
-            this.toolStripSplitButtonGET.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripSplitButtonGET.Name = "toolStripSplitButtonGET";
-            this.toolStripSplitButtonGET.Size = new System.Drawing.Size(55, 22);
-            this.toolStripSplitButtonGET.Text = "GET";
-            // 
-            // toolStripMenuItemLimits
-            // 
-            this.toolStripMenuItemLimits.Name = "toolStripMenuItemLimits";
-            this.toolStripMenuItemLimits.Size = new System.Drawing.Size(152, 22);
-            this.toolStripMenuItemLimits.Text = "Limits";
-            // 
-            // toolStripMenuItemServers
-            // 
-            this.toolStripMenuItemServers.Name = "toolStripMenuItemServers";
-            this.toolStripMenuItemServers.Size = new System.Drawing.Size(152, 22);
-            this.toolStripMenuItemServers.Text = "Servers";
+            this.toolStripMenuItemFlavors.Name = "toolStripMenuItemFlavors";
+            this.toolStripMenuItemFlavors.Size = new System.Drawing.Size(152, 22);
+            this.toolStripMenuItemFlavors.Text = "flavors";
+            this.toolStripMenuItemFlavors.Click += new System.EventHandler(this.toolStripMenuItem_Click);
             // 
             // MainForm
             // 
@@ -815,15 +812,14 @@
             this.contextMenuImages.ResumeLayout(false);
             this.tabGet.ResumeLayout(false);
             this.tabGet.PerformLayout();
+            this.toolStrip1.ResumeLayout(false);
+            this.toolStrip1.PerformLayout();
             this.tabPost.ResumeLayout(false);
             this.tabPost.PerformLayout();
             this.tabPut.ResumeLayout(false);
             this.tabPut.PerformLayout();
             this.tabDelete.ResumeLayout(false);
             this.tabDelete.PerformLayout();
-            this.contextMenuGET.ResumeLayout(false);
-            this.toolStrip1.ResumeLayout(false);
-            this.toolStrip1.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -840,7 +836,6 @@
         private System.Windows.Forms.TextBox tbServerDetails;
         private System.Windows.Forms.TextBox tbGetUrl;
         private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.Button bGetURL;
         private System.Windows.Forms.TextBox tbGetResults;
         private System.Windows.Forms.ContextMenuStrip contextMenuServers;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuCreateImage;
@@ -895,14 +890,13 @@
         private System.Windows.Forms.TextBox tbPostBody;
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.TextBox tbPostResults;
-        private System.Windows.Forms.ContextMenuStrip contextMenuGET;
-        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
-        private System.Windows.Forms.ToolStripMenuItem serversToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem imagesToolStripMenuItem;
         private System.Windows.Forms.ToolStrip toolStrip1;
         private System.Windows.Forms.ToolStripSplitButton toolStripSplitButtonGET;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemLimits;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemServers;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemExtensions;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemImages;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemFlavors;
     }
 }
 

@@ -36,8 +36,8 @@ namespace OpenStackAPIHelper
         {
             try
             {
-                this.Cursor = Cursors.WaitCursor;
-                System.Windows.Forms.Application.DoEvents();
+                //this.Cursor = Cursors.WaitCursor;
+                //System.Windows.Forms.Application.DoEvents();
                 LoadAuth();
                 var servers = GetServers();
                 this.lbServers.Items.Clear();
@@ -67,7 +67,7 @@ namespace OpenStackAPIHelper
         {
             try
             {
-                var server = (Entities.Server)this.lbServers.Items[lbServers.SelectedIndex];
+                var server = (Entities.Server)this.lbServers.SelectedItem;
 
                 this.tbServerDetails.Text = string.Format("########## SERVER ###########\r\nName={0}\r\nID={1}\r\nLink={2}\r\n", server.Name, server.Id, server.Links[0].Href);
                 if (!string.IsNullOrEmpty(server.DetailJson))
@@ -112,18 +112,34 @@ namespace OpenStackAPIHelper
         {
             try
             {
+                var server = (Entities.Server)this.lbServers.SelectedItem;
                 //MessageBox.Show(e.ClickedItem.Text);
-                if (e.ClickedItem.Text == "Create Image")
+                switch (e.ClickedItem.Text)
                 {
-                    //CreateImageFromSelectedServer();
-                }
-                else if (e.ClickedItem.Text == "Delete")
-                {
-
-                }
-                else if (e.ClickedItem.Text == "Reboot")
-                {
-
+                    case "Create Image":
+                        this.tbPostUrl.Text = this.computeUrl + "/servers/" + server.Id + "/action";
+                        this.tbPostBody.Text = FormatJson("{\"createImage\":{\"name\":\"IMAGE_NAME_HERE\",\"metadata\":{\"Description\":\"Image of web server.\"}}}");
+                        this.tabPost.Focus();
+                        break;
+                    case "Delete":
+                        this.tbDeleteUrl.Text = this.computeUrl + "/servers/" + server.Id;
+                        this.tabDelete.Focus();
+                        break;
+                    case "Reboot":
+                        this.tbPostUrl.Text = this.computeUrl + "/servers/" + server.Id + "/action";
+                        this.tbPostBody.Text = FormatJson("{\"reboot\":{\"type\":\"SOFT\"}}");
+                        this.tabPost.Focus();
+                        break;
+                    case "Change Password":
+                        this.tbPostUrl.Text = this.computeUrl + "/servers/" + server.Id + "/action";
+                        this.tbPostBody.Text = FormatJson("{\"changePassword\":{\"adminPass\":\"ENTER_PASSWORD_HERE___NO_THIS_ISNT_A_GOOD_PASSWORD___DONT_USE_IT\"}}");
+                        this.tabPost.Focus();
+                        break;
+                    case "Change Metadata":
+                        this.tbPostUrl.Text = this.computeUrl + "/servers/" + server.Id + "/metadata";
+                        this.tbPostBody.Text = FormatJson("{\"metadata\":{\"SOME_LABEL\":\"SOME_VALUE\"}}");
+                        this.tabPost.Focus();
+                        break;
                 }
             }
             catch (Exception ex)
@@ -214,7 +230,19 @@ namespace OpenStackAPIHelper
         }
         private void contextMenuImages_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
+            try
+            {
+                var image = (Entities.ServerImage)this.lbImages.SelectedItem;
+                switch (e.ClickedItem.Text)
+                {
 
+
+                }
+            }
+            catch (Exception ex)
+            {
+                this.tbServerDetails.Text = ex.ToString();
+            }
         }
         #endregion
         #region Flavors
@@ -309,7 +337,20 @@ namespace OpenStackAPIHelper
                 this.tbGetResults.Text = ex.ToString();
             }
         }
-        private void bGetURL_Click(object sender, EventArgs e)
+        private void toolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                var item = (ToolStripMenuItem)sender;
+                this.tbGetUrl.Text = computeUrl + "/" + item.Text;
+                toolStripSplitButtonGET_ButtonClick(sender, e);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
+        }
+        private void toolStripSplitButtonGET_ButtonClick(object sender, EventArgs e)
         {
             try
             {
@@ -334,6 +375,79 @@ namespace OpenStackAPIHelper
             }
         }
 
+        #endregion
+        #region POST
+        private void bPost_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                LoadAuth();
+                if (!this.tbPostUrl.Text.StartsWith(this.computeUrl))
+                {
+                    MessageBox.Show("URL must start with the Openstack endpoint. Double-click in the text box to set it.");
+                    return;
+                }
+                var response = MakeRequest(tbPostBody.Text, tbPostUrl.Text, "POST", Access.Token.tokenString);
+                tbPostResults.Text = ResponseDebugString(response);
+            }
+            catch (System.Net.WebException webex)
+            {
+                this.tbPostResults.Text = webex.ToString() + "\r\n" + ResponseDebugString((HttpWebResponse)webex.Response);
+            }
+            catch (Exception ex)
+            {
+                this.tbPostResults.Text = ex.ToString();
+            }
+        }
+        #endregion
+        #region PUT
+        private void bPut_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                LoadAuth();
+                if (!this.tbPutUrl.Text.StartsWith(this.computeUrl))
+                {
+                    MessageBox.Show("URL must start with the Openstack endpoint. Double-click in the text box to set it.");
+                    return;
+                }
+                var response = MakeRequest(tbPutBody.Text, tbPutUrl.Text, "POST", Access.Token.tokenString);
+                tbPutResults.Text = ResponseDebugString(response);
+            }
+            catch (System.Net.WebException webex)
+            {
+                this.tbPutResults.Text = webex.ToString() + "\r\n" + ResponseDebugString((HttpWebResponse)webex.Response);
+            }
+            catch (Exception ex)
+            {
+                this.tbPutResults.Text = ex.ToString();
+            }
+        }
+
+        #endregion
+        #region Delete
+        private void bDelete_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                LoadAuth();
+                if (!this.tbDeleteUrl.Text.StartsWith(this.computeUrl))
+                {
+                    MessageBox.Show("URL must start with the Openstack endpoint.");
+                    return;
+                }
+                var response = MakeRequest(null, tbDeleteUrl.Text, "POST", Access.Token.tokenString);
+                tbDeleteResults.Text = ResponseDebugString(response);
+            }
+            catch (System.Net.WebException webex)
+            {
+                this.tbDeleteResults.Text = webex.ToString() + "\r\n" + ResponseDebugString((HttpWebResponse)webex.Response);
+            }
+            catch (Exception ex)
+            {
+                this.tbDeleteResults.Text = ex.ToString();
+            }
+        }
         #endregion
 
         #region ServersAPI
@@ -647,6 +761,13 @@ namespace OpenStackAPIHelper
             }
             return sb.ToString();
         }
+
+        
+        
+        
+
+        
+
 
         
         
