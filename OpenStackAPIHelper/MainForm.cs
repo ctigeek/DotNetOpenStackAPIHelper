@@ -17,7 +17,7 @@ namespace OpenStackAPIHelper
         //http://docs.openstack.org/api/quick-start/content/
 
         private string IdentityUrl = "https://identity.api.rackspacecloud.com/v2.0/tokens";
-        private string computeUrl = string.Empty;
+        private string[] computeUrl;
         private Entities.Access Access;
 
         public MainForm()
@@ -26,22 +26,28 @@ namespace OpenStackAPIHelper
             this.tbServerDetails.Text = string.Empty;
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void bAuth_Click(object sender, EventArgs e)
         {
-            
+            try
+            {
+                this.LoadAuth();
+            }
+            catch (Exception ex)
+            {
+                this.tbServerDetails.Text = ex.ToString();
+            }
         }
-
         #region Servers
         private void bGetServers_Click(object sender, EventArgs e)
         {
             try
             {
-                //this.Cursor = Cursors.WaitCursor;
-                //System.Windows.Forms.Application.DoEvents();
+                this.Cursor = Cursors.WaitCursor;
+                System.Windows.Forms.Application.DoEvents();
                 LoadAuth();
-                var servers = GetServers();
+                var servers = GetAllServers();
                 this.lbServers.Items.Clear();
-                foreach (var server in servers.ServerList)
+                foreach (var server in servers.OrderBy(s=>s.Name))
                 {
                     this.lbServers.Items.Add(server);
                 }
@@ -90,7 +96,7 @@ namespace OpenStackAPIHelper
                 if (obj != null)
                 {
                     var server = (Entities.Server)obj;
-                    string result = GetServerDetail(server.Id);
+                    string result = GetServerDetail(server);
                     server.DetailJson = FormatJson(result);
                     lbServers_SelectedIndexChanged(sender, e);
                 }
@@ -113,31 +119,97 @@ namespace OpenStackAPIHelper
             try
             {
                 var server = (Entities.Server)this.lbServers.SelectedItem;
+                if (server == null) return;
                 //MessageBox.Show(e.ClickedItem.Text);
                 switch (e.ClickedItem.Text)
                 {
                     case "Create Image":
-                        this.tbPostUrl.Text = this.computeUrl + "/servers/" + server.Id + "/action";
+                        this.tbPostUrl.Text = server.SelfLink + "/action";
                         this.tbPostBody.Text = FormatJson("{\"createImage\":{\"name\":\"IMAGE_NAME_HERE\",\"metadata\":{\"Description\":\"Image of web server.\"}}}");
                         this.tabPost.Focus();
                         break;
                     case "Delete":
-                        this.tbDeleteUrl.Text = this.computeUrl + "/servers/" + server.Id;
+                        this.tbDeleteUrl.Text = server.SelfLink;
                         this.tabDelete.Focus();
                         break;
                     case "Reboot":
-                        this.tbPostUrl.Text = this.computeUrl + "/servers/" + server.Id + "/action";
+                        this.tbPostUrl.Text = server.SelfLink + "/action";
                         this.tbPostBody.Text = FormatJson("{\"reboot\":{\"type\":\"SOFT\"}}");
                         this.tabPost.Focus();
                         break;
                     case "Change Password":
-                        this.tbPostUrl.Text = this.computeUrl + "/servers/" + server.Id + "/action";
+                        this.tbPostUrl.Text = server.SelfLink + "/action";
                         this.tbPostBody.Text = FormatJson("{\"changePassword\":{\"adminPass\":\"ENTER_PASSWORD_HERE___NO_THIS_ISNT_A_GOOD_PASSWORD___DONT_USE_IT\"}}");
                         this.tabPost.Focus();
                         break;
                     case "Change Metadata":
-                        this.tbPostUrl.Text = this.computeUrl + "/servers/" + server.Id + "/metadata";
+                        this.tbPostUrl.Text = server.SelfLink + "/metadata";
                         this.tbPostBody.Text = FormatJson("{\"metadata\":{\"SOME_LABEL\":\"SOME_VALUE\"}}");
+                        this.tabPost.Focus();
+                        break;
+                    case "Resize":
+                        this.tbPostUrl.Text = server.SelfLink + "/action";
+                        this.tbPostBody.Text = FormatJson("{\"resize\":{\"flavorRef\":\"ENTER_FLAVOR_REF_NUMBER\"}}");
+                        this.tabPost.Focus();
+                        break;
+                    case "Confirm Resize":
+                        this.tbPostUrl.Text = server.SelfLink + "/action";
+                        this.tbPostBody.Text = FormatJson("{\"confirmResize\":null}");
+                        this.tabPost.Focus();
+                        break;
+                    case "Revert Resize":
+                        this.tbPostUrl.Text = server.SelfLink + "/action";
+                        this.tbPostBody.Text = FormatJson("{\"revertResize\":null}");
+                        this.tabPost.Focus();
+                        break;
+                    case "Pause":
+                        this.tbPostUrl.Text = server.SelfLink + "/action";
+                        this.tbPostBody.Text = FormatJson("{\"pause\":null}");
+                        this.tabPost.Focus();
+                        break;
+                    case "Unpause":
+                        this.tbPostUrl.Text = server.SelfLink + "/action";
+                        this.tbPostBody.Text = FormatJson("{\"unpause\":null}");
+                        this.tabPost.Focus();
+                        break;
+                    case "Suspend":
+                        this.tbPostUrl.Text = server.SelfLink + "/action";
+                        this.tbPostBody.Text = FormatJson("{\"suspend\":null}");
+                        this.tabPost.Focus();
+                        break;
+                    case "Resume":
+                        this.tbPostUrl.Text = server.SelfLink + "/action";
+                        this.tbPostBody.Text = FormatJson("{\"resume\":null}");
+                        this.tabPost.Focus();
+                        break;
+                    case "Migrate":
+                        this.tbPostUrl.Text = server.SelfLink + "/action";
+                        this.tbPostBody.Text = FormatJson("{\"migrate\":null}");
+                        this.tabPost.Focus();
+                        break;
+                    case "Reset Network":
+                        this.tbPostUrl.Text = server.SelfLink + "/action";
+                        this.tbPostBody.Text = FormatJson("{\"resetNetwork\":null}");
+                        this.tabPost.Focus();
+                        break;
+                    case "Inject Network":
+                        this.tbPostUrl.Text = server.SelfLink + "/action";
+                        this.tbPostBody.Text = FormatJson("{\"injectNetworkInfo\":null}");
+                        this.tabPost.Focus();
+                        break;
+                    case "Lock":
+                        this.tbPostUrl.Text = server.SelfLink + "/action";
+                        this.tbPostBody.Text = FormatJson("{\"lock\":null}");
+                        this.tabPost.Focus();
+                        break;
+                    case "Unlock":
+                        this.tbPostUrl.Text = server.SelfLink + "/action";
+                        this.tbPostBody.Text = FormatJson("{\"unlock\":null}");
+                        this.tabPost.Focus();
+                        break;
+                    case "Create Backup":
+                        this.tbPostUrl.Text = server.SelfLink + "/action";
+                        this.tbPostBody.Text = FormatJson("{\"createBackup\":{\"name\":\"ENTER_BACKUP_NAME\", \"backup_type\":\"daily\", \"rotation\":1}}");
                         this.tabPost.Focus();
                         break;
                 }
@@ -233,9 +305,14 @@ namespace OpenStackAPIHelper
             try
             {
                 var image = (Entities.ServerImage)this.lbImages.SelectedItem;
+                if (image == null) return;
                 switch (e.ClickedItem.Text)
                 {
-
+                    case "Delete":
+                        this.tbDeleteUrl.Text = this.computeUrl + "/images/" + image.Id;
+                        this.tabControl1.SelectedTab = this.tabDelete;
+                        this.tbDeleteUrl.Focus();
+                        break;
 
                 }
             }
@@ -330,7 +407,6 @@ namespace OpenStackAPIHelper
             try
             {
                 LoadAuth();
-                this.tbGetUrl.Text = computeUrl;
             }
             catch (Exception ex)
             {
@@ -355,11 +431,6 @@ namespace OpenStackAPIHelper
             try
             {
                 LoadAuth();
-                if (!this.tbGetUrl.Text.StartsWith(this.computeUrl))
-                {
-                    MessageBox.Show("URL must start with the Openstack endpoint. Double-click in the text box to set it.");
-                    return;
-                }
                 string url = this.tbGetUrl.Text;
                 var response = MakeRequest(null, url, "GET", this.Access.Token.tokenString);
 
@@ -382,11 +453,6 @@ namespace OpenStackAPIHelper
             try
             {
                 LoadAuth();
-                if (!this.tbPostUrl.Text.StartsWith(this.computeUrl))
-                {
-                    MessageBox.Show("URL must start with the Openstack endpoint. Double-click in the text box to set it.");
-                    return;
-                }
                 var response = MakeRequest(tbPostBody.Text, tbPostUrl.Text, "POST", Access.Token.tokenString);
                 tbPostResults.Text = ResponseDebugString(response);
             }
@@ -406,11 +472,6 @@ namespace OpenStackAPIHelper
             try
             {
                 LoadAuth();
-                if (!this.tbPutUrl.Text.StartsWith(this.computeUrl))
-                {
-                    MessageBox.Show("URL must start with the Openstack endpoint. Double-click in the text box to set it.");
-                    return;
-                }
                 var response = MakeRequest(tbPutBody.Text, tbPutUrl.Text, "POST", Access.Token.tokenString);
                 tbPutResults.Text = ResponseDebugString(response);
             }
@@ -431,11 +492,6 @@ namespace OpenStackAPIHelper
             try
             {
                 LoadAuth();
-                if (!this.tbDeleteUrl.Text.StartsWith(this.computeUrl))
-                {
-                    MessageBox.Show("URL must start with the Openstack endpoint.");
-                    return;
-                }
                 var response = MakeRequest(null, tbDeleteUrl.Text, "POST", Access.Token.tokenString);
                 tbDeleteResults.Text = ResponseDebugString(response);
             }
@@ -451,9 +507,20 @@ namespace OpenStackAPIHelper
         #endregion
 
         #region ServersAPI
-        private Entities.Servers GetServers()
+        private IEnumerable<Entities.Server> GetAllServers()
         {
-            string url = computeUrl + "/servers";
+            foreach (var endpoint in this.computeUrl)
+            {
+                foreach (var server in GetServers(endpoint).ServerList)
+                {
+                    yield return server;
+                }
+            }
+        }
+
+        private Entities.Servers GetServers(string baseUrl)
+        {
+            string url = baseUrl + "/servers";
             var response = MakeRequest(null, url, "GET", this.Access.Token.tokenString);
             var responsestream = response.GetResponseStream();
             Entities.Servers servers = null;
@@ -463,35 +530,34 @@ namespace OpenStackAPIHelper
             }
             return servers;
         }
-        private string GetServerDetail(string serverId)
+        private string GetServerDetail(Entities.Server server)
         {
-            string url = computeUrl + "/servers/" + serverId;
-            var response = MakeRequest(null, url, "GET", this.Access.Token.tokenString);
+            var response = MakeRequest(null, server.SelfLink, "GET", this.Access.Token.tokenString);
             string result = GetStringFromStream(response.GetResponseStream());
             return result;
         }
-        private void CreateImageFromSelectedServer()
-        {
-            object obj = this.lbServers.SelectedItem;
-            if (obj != null)
-            {
-                var server = (Entities.Server)obj;
-                var frmImage = new FrmCreateImage();
-                frmImage.ServerName = server.Name;
-                frmImage.ImageName = server.Name + "_NewImage";
-                var result = frmImage.ShowDialog(this);
-                if (result == System.Windows.Forms.DialogResult.OK)
-                {
-                    string url = computeUrl + "/servers/" + server.Id + "/action";
-                    string json = "{\"createImage\":{\"name\":\"" + frmImage.ImageName + "\"}}";
-                    var response = MakeRequest(json, url, "POST", this.Access.Token.tokenString);
-                    if (response.ContentLength > 0)
-                    {
-                        MessageBox.Show(GetStringFromStream(response.GetResponseStream()));
-                    }
-                }
-            }
-        }
+        //private void CreateImageFromSelectedServer()
+        //{
+        //    object obj = this.lbServers.SelectedItem;
+        //    if (obj != null)
+        //    {
+        //        var server = (Entities.Server)obj;
+        //        var frmImage = new FrmCreateImage();
+        //        frmImage.ServerName = server.Name;
+        //        frmImage.ImageName = server.Name + "_NewImage";
+        //        var result = frmImage.ShowDialog(this);
+        //        if (result == System.Windows.Forms.DialogResult.OK)
+        //        {
+        //            //string url = computeUrl + "/servers/" + server.Id + "/action";
+        //            string json = "{\"createImage\":{\"name\":\"" + frmImage.ImageName + "\"}}";
+        //            var response = MakeRequest(json, url, "POST", this.Access.Token.tokenString);
+        //            if (response.ContentLength > 0)
+        //            {
+        //                MessageBox.Show(GetStringFromStream(response.GetResponseStream()));
+        //            }
+        //        }
+        //    }
+        //}
         #endregion
 
         private string GetLimits()
@@ -567,8 +633,26 @@ namespace OpenStackAPIHelper
                 {
                     throw new ArgumentNullException("Authentication failed.");
                 }
-                this.computeUrl = this.Access.ServiceCatalog.FirstOrDefault(sc => sc.Type == "compute").Endpoints[0].PublicUrl;
-                this.tbGetUrl.Text = this.computeUrl;
+                this.computeUrl = GetComputeEndpoints().ToArray();
+                this.bGetServers.Enabled = true;
+                this.bRetrieveImages.Enabled = true;
+                this.bRetrieveFlavors.Enabled = true;
+                this.toolStripSplitButtonGET.Enabled = true;
+                this.bDelete.Enabled = true;
+                this.bPut.Enabled = true;
+                this.bPost.Enabled = true;
+            }
+            this.tbServerDetails.Text = Access.ToString();
+        }
+
+        private IEnumerable<string> GetComputeEndpoints()
+        {
+            foreach (var catalog in this.Access.ServiceCatalog.Where(sc => sc.Type == "compute"))
+            {
+                foreach (var endpoint in catalog.Endpoints)
+                {
+                    yield return endpoint.PublicUrl;
+                }
             }
         }
 
@@ -659,8 +743,7 @@ namespace OpenStackAPIHelper
             if (response != null)
             {
                 sb.AppendFormat("URI = {0}\r\n", response.ResponseUri.ToString());
-                sb.AppendFormat("Response Code = {0}", response.StatusCode.ToString());
-                sb.Append("Headers:\r\n");
+                sb.AppendFormat("Response Code = {0}-{1}\r\n", ((int)response.StatusCode).ToString(), response.StatusCode.ToString());
                 foreach (var key in response.Headers.AllKeys)
                 {
                     sb.AppendFormat("{0} = {1}\r\n", key, response.Headers[key]);
@@ -761,6 +844,8 @@ namespace OpenStackAPIHelper
             }
             return sb.ToString();
         }
+
+        
 
         
         

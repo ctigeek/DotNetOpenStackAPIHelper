@@ -30,9 +30,9 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
-            this.button1 = new System.Windows.Forms.Button();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabCompute = new System.Windows.Forms.TabPage();
+            this.bAuth = new System.Windows.Forms.Button();
             this.bRetrieveFlavors = new System.Windows.Forms.Button();
             this.bRetrieveImages = new System.Windows.Forms.Button();
             this.lbFlavors = new System.Windows.Forms.ListBox();
@@ -55,9 +55,6 @@
             this.lockToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.unlockToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.createBackupToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.oSMigrateLiveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.oSResetStateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.evacuateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.lbImages = new System.Windows.Forms.ListBox();
             this.contextMenuImages = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.deleteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -70,6 +67,9 @@
             this.tabGet = new System.Windows.Forms.TabPage();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.toolStripSplitButtonGET = new System.Windows.Forms.ToolStripSplitButton();
+            this.toolStripMenuItemExtensions = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItemFlavors = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItemImages = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItemLimits = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItemServers = new System.Windows.Forms.ToolStripMenuItem();
             this.label1 = new System.Windows.Forms.Label();
@@ -98,9 +98,6 @@
             this.bDelete = new System.Windows.Forms.Button();
             this.tbDeleteUrl = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
-            this.toolStripMenuItemExtensions = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItemImages = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItemFlavors = new System.Windows.Forms.ToolStripMenuItem();
             this.tabControl1.SuspendLayout();
             this.tabCompute.SuspendLayout();
             this.contextMenuServers.SuspendLayout();
@@ -112,16 +109,6 @@
             this.tabDelete.SuspendLayout();
             this.SuspendLayout();
             // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(772, -1);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 0;
-            this.button1.Text = "button1";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
-            // 
             // tabControl1
             // 
             this.tabControl1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -132,7 +119,7 @@
             this.tabControl1.Controls.Add(this.tabPost);
             this.tabControl1.Controls.Add(this.tabPut);
             this.tabControl1.Controls.Add(this.tabDelete);
-            this.tabControl1.Location = new System.Drawing.Point(3, 12);
+            this.tabControl1.Location = new System.Drawing.Point(3, 6);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
             this.tabControl1.Size = new System.Drawing.Size(854, 577);
@@ -140,6 +127,7 @@
             // 
             // tabCompute
             // 
+            this.tabCompute.Controls.Add(this.bAuth);
             this.tabCompute.Controls.Add(this.bRetrieveFlavors);
             this.tabCompute.Controls.Add(this.bRetrieveImages);
             this.tabCompute.Controls.Add(this.lbFlavors);
@@ -156,9 +144,20 @@
             this.tabCompute.Text = "Compute";
             this.tabCompute.UseVisualStyleBackColor = true;
             // 
+            // bAuth
+            // 
+            this.bAuth.Location = new System.Drawing.Point(6, 6);
+            this.bAuth.Name = "bAuth";
+            this.bAuth.Size = new System.Drawing.Size(74, 23);
+            this.bAuth.TabIndex = 14;
+            this.bAuth.Text = "Auth";
+            this.bAuth.UseVisualStyleBackColor = true;
+            this.bAuth.Click += new System.EventHandler(this.bAuth_Click);
+            // 
             // bRetrieveFlavors
             // 
             this.bRetrieveFlavors.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.bRetrieveFlavors.Enabled = false;
             this.bRetrieveFlavors.Location = new System.Drawing.Point(659, 6);
             this.bRetrieveFlavors.Name = "bRetrieveFlavors";
             this.bRetrieveFlavors.Size = new System.Drawing.Size(122, 23);
@@ -169,6 +168,7 @@
             // 
             // bRetrieveImages
             // 
+            this.bRetrieveImages.Enabled = false;
             this.bRetrieveImages.Location = new System.Drawing.Point(338, 6);
             this.bRetrieveImages.Name = "bRetrieveImages";
             this.bRetrieveImages.Size = new System.Drawing.Size(122, 23);
@@ -182,9 +182,9 @@
             this.lbFlavors.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.lbFlavors.ContextMenuStrip = this.contextMenuServers;
             this.lbFlavors.FormattingEnabled = true;
-            this.lbFlavors.Location = new System.Drawing.Point(578, 35);
+            this.lbFlavors.Location = new System.Drawing.Point(626, 35);
             this.lbFlavors.Name = "lbFlavors";
-            this.lbFlavors.Size = new System.Drawing.Size(262, 186);
+            this.lbFlavors.Size = new System.Drawing.Size(214, 186);
             this.lbFlavors.TabIndex = 11;
             this.lbFlavors.SelectedIndexChanged += new System.EventHandler(this.lbFlavors_SelectedIndexChanged);
             this.lbFlavors.DoubleClick += new System.EventHandler(this.lbFlavors_DoubleClick);
@@ -209,12 +209,9 @@
             this.injectNetworkToolStripMenuItem,
             this.lockToolStripMenuItem,
             this.unlockToolStripMenuItem,
-            this.createBackupToolStripMenuItem,
-            this.oSMigrateLiveToolStripMenuItem,
-            this.oSResetStateToolStripMenuItem,
-            this.evacuateToolStripMenuItem});
+            this.createBackupToolStripMenuItem});
             this.contextMenuServers.Name = "contextMenuServers";
-            this.contextMenuServers.Size = new System.Drawing.Size(169, 466);
+            this.contextMenuServers.Size = new System.Drawing.Size(169, 400);
             this.contextMenuServers.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.contextMenuServers_Click);
             // 
             // toolStripMenuCreateImage
@@ -325,24 +322,6 @@
             this.createBackupToolStripMenuItem.Size = new System.Drawing.Size(168, 22);
             this.createBackupToolStripMenuItem.Text = "Create Backup";
             // 
-            // oSMigrateLiveToolStripMenuItem
-            // 
-            this.oSMigrateLiveToolStripMenuItem.Name = "oSMigrateLiveToolStripMenuItem";
-            this.oSMigrateLiveToolStripMenuItem.Size = new System.Drawing.Size(168, 22);
-            this.oSMigrateLiveToolStripMenuItem.Text = "OS Migrate Live";
-            // 
-            // oSResetStateToolStripMenuItem
-            // 
-            this.oSResetStateToolStripMenuItem.Name = "oSResetStateToolStripMenuItem";
-            this.oSResetStateToolStripMenuItem.Size = new System.Drawing.Size(168, 22);
-            this.oSResetStateToolStripMenuItem.Text = "OS Reset State";
-            // 
-            // evacuateToolStripMenuItem
-            // 
-            this.evacuateToolStripMenuItem.Name = "evacuateToolStripMenuItem";
-            this.evacuateToolStripMenuItem.Size = new System.Drawing.Size(168, 22);
-            this.evacuateToolStripMenuItem.Text = "Evacuate";
-            // 
             // lbImages
             // 
             this.lbImages.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
@@ -351,7 +330,7 @@
             this.lbImages.FormattingEnabled = true;
             this.lbImages.Location = new System.Drawing.Point(289, 34);
             this.lbImages.Name = "lbImages";
-            this.lbImages.Size = new System.Drawing.Size(283, 186);
+            this.lbImages.Size = new System.Drawing.Size(331, 186);
             this.lbImages.TabIndex = 10;
             this.lbImages.SelectedIndexChanged += new System.EventHandler(this.lbImages_SelectedIndexChanged);
             this.lbImages.DoubleClick += new System.EventHandler(this.lbImages_DoubleClick);
@@ -409,7 +388,8 @@
             // 
             // bGetServers
             // 
-            this.bGetServers.Location = new System.Drawing.Point(52, 6);
+            this.bGetServers.Enabled = false;
+            this.bGetServers.Location = new System.Drawing.Point(147, 6);
             this.bGetServers.Name = "bGetServers";
             this.bGetServers.Size = new System.Drawing.Size(122, 23);
             this.bGetServers.TabIndex = 1;
@@ -466,12 +446,34 @@
             this.toolStripMenuItemImages,
             this.toolStripMenuItemLimits,
             this.toolStripMenuItemServers});
+            this.toolStripSplitButtonGET.Enabled = false;
             this.toolStripSplitButtonGET.Image = ((System.Drawing.Image)(resources.GetObject("toolStripSplitButtonGET.Image")));
             this.toolStripSplitButtonGET.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripSplitButtonGET.Name = "toolStripSplitButtonGET";
             this.toolStripSplitButtonGET.Size = new System.Drawing.Size(55, 22);
             this.toolStripSplitButtonGET.Text = "GET";
             this.toolStripSplitButtonGET.ButtonClick += new System.EventHandler(this.toolStripSplitButtonGET_ButtonClick);
+            // 
+            // toolStripMenuItemExtensions
+            // 
+            this.toolStripMenuItemExtensions.Name = "toolStripMenuItemExtensions";
+            this.toolStripMenuItemExtensions.Size = new System.Drawing.Size(152, 22);
+            this.toolStripMenuItemExtensions.Text = "extensions";
+            this.toolStripMenuItemExtensions.Click += new System.EventHandler(this.toolStripMenuItem_Click);
+            // 
+            // toolStripMenuItemFlavors
+            // 
+            this.toolStripMenuItemFlavors.Name = "toolStripMenuItemFlavors";
+            this.toolStripMenuItemFlavors.Size = new System.Drawing.Size(152, 22);
+            this.toolStripMenuItemFlavors.Text = "flavors";
+            this.toolStripMenuItemFlavors.Click += new System.EventHandler(this.toolStripMenuItem_Click);
+            // 
+            // toolStripMenuItemImages
+            // 
+            this.toolStripMenuItemImages.Name = "toolStripMenuItemImages";
+            this.toolStripMenuItemImages.Size = new System.Drawing.Size(152, 22);
+            this.toolStripMenuItemImages.Text = "images";
+            this.toolStripMenuItemImages.Click += new System.EventHandler(this.toolStripMenuItem_Click);
             // 
             // toolStripMenuItemLimits
             // 
@@ -592,6 +594,7 @@
             // bPost
             // 
             this.bPost.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.bPost.Enabled = false;
             this.bPost.Location = new System.Drawing.Point(736, 3);
             this.bPost.Name = "bPost";
             this.bPost.Size = new System.Drawing.Size(75, 23);
@@ -682,6 +685,7 @@
             // bPut
             // 
             this.bPut.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.bPut.Enabled = false;
             this.bPut.Location = new System.Drawing.Point(737, 3);
             this.bPut.Name = "bPut";
             this.bPut.Size = new System.Drawing.Size(75, 23);
@@ -748,6 +752,7 @@
             // bDelete
             // 
             this.bDelete.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.bDelete.Enabled = false;
             this.bDelete.Location = new System.Drawing.Point(741, 3);
             this.bDelete.Name = "bDelete";
             this.bDelete.Size = new System.Drawing.Size(75, 23);
@@ -775,34 +780,12 @@
             this.label6.TabIndex = 7;
             this.label6.Text = "URL";
             // 
-            // toolStripMenuItemExtensions
-            // 
-            this.toolStripMenuItemExtensions.Name = "toolStripMenuItemExtensions";
-            this.toolStripMenuItemExtensions.Size = new System.Drawing.Size(152, 22);
-            this.toolStripMenuItemExtensions.Text = "extensions";
-            this.toolStripMenuItemExtensions.Click += new System.EventHandler(this.toolStripMenuItem_Click);
-            // 
-            // toolStripMenuItemImages
-            // 
-            this.toolStripMenuItemImages.Name = "toolStripMenuItemImages";
-            this.toolStripMenuItemImages.Size = new System.Drawing.Size(152, 22);
-            this.toolStripMenuItemImages.Text = "images";
-            this.toolStripMenuItemImages.Click += new System.EventHandler(this.toolStripMenuItem_Click);
-            // 
-            // toolStripMenuItemFlavors
-            // 
-            this.toolStripMenuItemFlavors.Name = "toolStripMenuItemFlavors";
-            this.toolStripMenuItemFlavors.Size = new System.Drawing.Size(152, 22);
-            this.toolStripMenuItemFlavors.Text = "flavors";
-            this.toolStripMenuItemFlavors.Click += new System.EventHandler(this.toolStripMenuItem_Click);
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(859, 589);
             this.Controls.Add(this.tabControl1);
-            this.Controls.Add(this.button1);
             this.Name = "MainForm";
             this.Text = "OpenStackAPIHelper";
             this.tabControl1.ResumeLayout(false);
@@ -826,7 +809,6 @@
 
         #endregion
 
-        private System.Windows.Forms.Button button1;
         private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.TabPage tabCompute;
         private System.Windows.Forms.TabPage tabGet;
@@ -860,9 +842,6 @@
         private System.Windows.Forms.ToolStripMenuItem lockToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem unlockToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem createBackupToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem oSMigrateLiveToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem oSResetStateToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem evacuateToolStripMenuItem;
         private System.Windows.Forms.ContextMenuStrip contextMenuImages;
         private System.Windows.Forms.ToolStripMenuItem deleteToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem metadataToolStripMenuItem;
@@ -897,6 +876,7 @@
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemExtensions;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemImages;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemFlavors;
+        private System.Windows.Forms.Button bAuth;
     }
 }
 

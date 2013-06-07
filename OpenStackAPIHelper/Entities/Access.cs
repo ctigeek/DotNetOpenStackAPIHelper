@@ -20,6 +20,39 @@ namespace OpenStackAPIHelper.Entities
         public List<ServiceCatalogMember> ServiceCatalog { get; set; }
         [DataMember(Name = "user")]
         public NovaUser User { get; set; }
+
+        public override string ToString()
+        {
+            System.Text.StringBuilder sb = new System.Text.StringBuilder();
+            sb.AppendFormat("Token String = {0}\r\n", Token.tokenString);
+            sb.AppendFormat("Token Tenant = {0}\r\n", Token.Tenant);
+            sb.AppendFormat("Token Expire = {0}\r\n", Token.Expires);
+            sb.AppendFormat("User Id = {0}\r\n", User.id);
+            sb.AppendFormat("User Name = {0}\r\n", User.Name);
+            sb.AppendFormat("User username = {0}\r\n", User.Username);
+            foreach (var scm in ServiceCatalog)
+            {
+                sb.AppendFormat("Service Catalog Name = {0}, type = {1}\r\n", scm.Name, scm.Type);
+                if (scm.EndpointLinks != null)
+                {
+                    foreach (var link in scm.EndpointLinks)
+                    {
+                        sb.AppendFormat("\tLink = {0}\r\n", link);
+                    }
+                }
+                if (scm.Endpoints != null)
+                {
+                    foreach (var endpoint in scm.Endpoints)
+                    {
+                        sb.AppendFormat("\tEndpoints for Region {0}\r\n", endpoint.Region);
+                        sb.AppendFormat("\t\tEndpoint Public URL = {0}\r\n", endpoint.PublicUrl);
+                        sb.AppendFormat("\t\tEndpoint Internal URL = {0}\r\n", endpoint.InternalUrl);
+                        sb.AppendFormat("\t\tEndpoint Admin URL = {0}\r\n", endpoint.AdminUrl);
+                    }
+                }
+            }
+            return sb.ToString();
+        }
     }
 
     [DataContract]

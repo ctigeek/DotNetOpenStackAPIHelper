@@ -27,30 +27,21 @@ namespace OpenStackAPIHelper.Entities
         [DataMember(Name = "links")]
         public List<ServerLink> Links { get; set; }
 
+        public string SelfLink
+        {
+            get
+            {
+                var link = Links.FirstOrDefault(l => l.Rel == "self");
+                return link == null ? null : link.Href;
+            }
+        }
+
         public string DetailJson { get; set; }
 
         public override string ToString()
         {
             return Name;
         }
-
-        //Detail data: v2/{tenant_id}/images/detail
-
-        [DataMember(Name = "created")]
-        public string Created { get; set; }
-        [DataMember(Name = "minDisk")]
-        public string MinDisk { get; set; }
-        [DataMember(Name = "minRam")]
-        public string MinRam { get; set; }
-        [DataMember(Name = "progress")]
-        public string Progress { get; set; }
-        [DataMember(Name = "status")]
-        public string Status { get; set; }
-        [DataMember(Name = "updated")]
-        public string Updated { get; set; }
-        //[DataMember(Name = "metadata")]
-        //public  Metadata { get; set; }
-        //http://stackoverflow.com/questions/2297903/generic-wcf-json-deserialization
 
     }
 }

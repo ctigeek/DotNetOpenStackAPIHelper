@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 
@@ -22,6 +23,15 @@ namespace OpenStackAPIHelper.Entities
 
         [DataMember(Name = "name")]
         public string Name { get; set; }
+
+        public string SelfLink
+        {
+            get
+            {
+                var link = Links.FirstOrDefault(l => l.Rel == "self");
+                return link == null ? null : link.Href;
+            }
+        }
 
         public string DetailJson { get; set; }
 
