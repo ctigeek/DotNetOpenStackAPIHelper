@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 
@@ -31,16 +32,30 @@ namespace OpenStackAPIHelper.Entities
         {
             get
             {
-                var link = Links.FirstOrDefault(l => l.Rel == "self");
-                return link == null ? null : link.Href;
+                if (Links != null)
+                {
+                    var link = Links.FirstOrDefault(l => l.Rel == "self");
+                    return link == null ? null : link.Href;
+                }
+                return null;
             }
         }
 
         public string DetailJson { get; set; }
 
+        public string Region
+        {
+            get
+            {
+                return SelfLink == null ? null : SelfLink.Substring(8, 3);
+            }
+        }
+
         public override string ToString()
         {
-            return Name;
+            return Region == null ?
+                    Name :
+                    "(" + Region + ") " + Name;
         }
 
     }

@@ -30,12 +30,15 @@ namespace OpenStackAPIHelper
         {
             try
             {
+                this.Cursor = Cursors.WaitCursor;
+                System.Windows.Forms.Application.DoEvents();
                 this.LoadAuth();
             }
             catch (Exception ex)
             {
                 this.tbServerDetails.Text = ex.ToString();
             }
+            this.Cursor = Cursors.Default;
         }
         #region Servers
         private void bGetServers_Click(object sender, EventArgs e)
@@ -44,7 +47,6 @@ namespace OpenStackAPIHelper
             {
                 this.Cursor = Cursors.WaitCursor;
                 System.Windows.Forms.Application.DoEvents();
-                LoadAuth();
                 var servers = GetAllServers();
                 this.lbServers.Items.Clear();
                 foreach (var server in servers.OrderBy(s=>s.Name))
@@ -75,7 +77,7 @@ namespace OpenStackAPIHelper
             {
                 var server = (Entities.Server)this.lbServers.SelectedItem;
 
-                this.tbServerDetails.Text = string.Format("########## SERVER ###########\r\nName={0}\r\nID={1}\r\nLink={2}\r\n", server.Name, server.Id, server.Links[0].Href);
+                this.tbServerDetails.Text = string.Format("########## SERVER ###########\r\nName={0}\r\nID={1}\r\nLink={2}\r\n", server.Name, server.Id, server.SelfLink);
                 if (!string.IsNullOrEmpty(server.DetailJson))
                 {
                     this.tbServerDetails.Text += server.DetailJson;
@@ -119,98 +121,115 @@ namespace OpenStackAPIHelper
             try
             {
                 var server = (Entities.Server)this.lbServers.SelectedItem;
-                if (server == null) return;
-                //MessageBox.Show(e.ClickedItem.Text);
+                if (server == null || server.SelfLink == null) return;
                 switch (e.ClickedItem.Text)
                 {
                     case "Create Image":
                         this.tbPostUrl.Text = server.SelfLink + "/action";
                         this.tbPostBody.Text = FormatJson("{\"createImage\":{\"name\":\"IMAGE_NAME_HERE\",\"metadata\":{\"Description\":\"Image of web server.\"}}}");
-                        this.tabPost.Focus();
+                        this.tabControl1.SelectedTab = this.tabPost;
+                        this.tbPostUrl.Focus();
                         break;
                     case "Delete":
                         this.tbDeleteUrl.Text = server.SelfLink;
-                        this.tabDelete.Focus();
+                        this.tabControl1.SelectedTab = this.tabDelete;
+                        this.tbDeleteUrl.Focus();
                         break;
                     case "Reboot":
                         this.tbPostUrl.Text = server.SelfLink + "/action";
                         this.tbPostBody.Text = FormatJson("{\"reboot\":{\"type\":\"SOFT\"}}");
-                        this.tabPost.Focus();
+                        this.tabControl1.SelectedTab = this.tabPost;
+                        this.tbPostUrl.Focus();
                         break;
                     case "Change Password":
                         this.tbPostUrl.Text = server.SelfLink + "/action";
                         this.tbPostBody.Text = FormatJson("{\"changePassword\":{\"adminPass\":\"ENTER_PASSWORD_HERE___NO_THIS_ISNT_A_GOOD_PASSWORD___DONT_USE_IT\"}}");
-                        this.tabPost.Focus();
+                        this.tabControl1.SelectedTab = this.tabPost;
+                        this.tbPostUrl.Focus();
                         break;
                     case "Change Metadata":
                         this.tbPostUrl.Text = server.SelfLink + "/metadata";
                         this.tbPostBody.Text = FormatJson("{\"metadata\":{\"SOME_LABEL\":\"SOME_VALUE\"}}");
-                        this.tabPost.Focus();
+                        this.tabControl1.SelectedTab = this.tabPost;
+                        this.tbPostUrl.Focus();
                         break;
                     case "Resize":
                         this.tbPostUrl.Text = server.SelfLink + "/action";
                         this.tbPostBody.Text = FormatJson("{\"resize\":{\"flavorRef\":\"ENTER_FLAVOR_REF_NUMBER\"}}");
-                        this.tabPost.Focus();
+                        this.tabControl1.SelectedTab = this.tabPost;
+                        this.tbPostUrl.Focus();
                         break;
                     case "Confirm Resize":
                         this.tbPostUrl.Text = server.SelfLink + "/action";
                         this.tbPostBody.Text = FormatJson("{\"confirmResize\":null}");
-                        this.tabPost.Focus();
+                        this.tabControl1.SelectedTab = this.tabPost;
+                        this.tbPostUrl.Focus();
                         break;
                     case "Revert Resize":
                         this.tbPostUrl.Text = server.SelfLink + "/action";
                         this.tbPostBody.Text = FormatJson("{\"revertResize\":null}");
-                        this.tabPost.Focus();
+                        this.tabControl1.SelectedTab = this.tabPost;
+                        this.tbPostUrl.Focus();
                         break;
                     case "Pause":
                         this.tbPostUrl.Text = server.SelfLink + "/action";
                         this.tbPostBody.Text = FormatJson("{\"pause\":null}");
-                        this.tabPost.Focus();
+                        this.tabControl1.SelectedTab = this.tabPost;
+                        this.tbPostUrl.Focus();
                         break;
                     case "Unpause":
                         this.tbPostUrl.Text = server.SelfLink + "/action";
                         this.tbPostBody.Text = FormatJson("{\"unpause\":null}");
-                        this.tabPost.Focus();
+                        this.tabControl1.SelectedTab = this.tabPost;
+                        this.tbPostUrl.Focus();
                         break;
                     case "Suspend":
                         this.tbPostUrl.Text = server.SelfLink + "/action";
                         this.tbPostBody.Text = FormatJson("{\"suspend\":null}");
-                        this.tabPost.Focus();
+                        this.tabControl1.SelectedTab = this.tabPost;
+                        this.tbPostUrl.Focus();
                         break;
                     case "Resume":
                         this.tbPostUrl.Text = server.SelfLink + "/action";
                         this.tbPostBody.Text = FormatJson("{\"resume\":null}");
-                        this.tabPost.Focus();
+                        this.tabControl1.SelectedTab = this.tabPost;
+                        this.tbPostUrl.Focus();
                         break;
                     case "Migrate":
                         this.tbPostUrl.Text = server.SelfLink + "/action";
                         this.tbPostBody.Text = FormatJson("{\"migrate\":null}");
-                        this.tabPost.Focus();
+                        this.tabControl1.SelectedTab = this.tabPost;
+                        this.tbPostUrl.Focus();
                         break;
                     case "Reset Network":
                         this.tbPostUrl.Text = server.SelfLink + "/action";
                         this.tbPostBody.Text = FormatJson("{\"resetNetwork\":null}");
-                        this.tabPost.Focus();
+                        this.tabControl1.SelectedTab = this.tabPost;
+                        this.tbPostUrl.Focus();
                         break;
                     case "Inject Network":
                         this.tbPostUrl.Text = server.SelfLink + "/action";
                         this.tbPostBody.Text = FormatJson("{\"injectNetworkInfo\":null}");
-                        this.tabPost.Focus();
+                        this.tabControl1.SelectedTab = this.tabPost;
+                        this.tbPostUrl.Focus();
                         break;
                     case "Lock":
                         this.tbPostUrl.Text = server.SelfLink + "/action";
                         this.tbPostBody.Text = FormatJson("{\"lock\":null}");
-                        this.tabPost.Focus();
+                        this.tabControl1.SelectedTab = this.tabPost;
+                        this.tbPostUrl.Focus();
                         break;
                     case "Unlock":
                         this.tbPostUrl.Text = server.SelfLink + "/action";
                         this.tbPostBody.Text = FormatJson("{\"unlock\":null}");
-                        this.tabPost.Focus();
+                        this.tabControl1.SelectedTab = this.tabPost;
+                        this.tbPostUrl.Focus();
                         break;
                     case "Create Backup":
                         this.tbPostUrl.Text = server.SelfLink + "/action";
                         this.tbPostBody.Text = FormatJson("{\"createBackup\":{\"name\":\"ENTER_BACKUP_NAME\", \"backup_type\":\"daily\", \"rotation\":1}}");
-                        this.tabPost.Focus();
+                        this.tabControl1.SelectedTab = this.tabPost;
+                        this.tbPostUrl.Focus();
                         break;
                 }
             }
@@ -229,11 +248,9 @@ namespace OpenStackAPIHelper
             {
                 this.Cursor = Cursors.WaitCursor;
                 System.Windows.Forms.Application.DoEvents();
-
-                LoadAuth();
-                var images = GetImages();
+                var images = GetAllImages();
                 this.lbImages.Items.Clear();
-                foreach (var image in images.ImageList)
+                foreach (var image in images.OrderBy(i=>i.Region).ThenBy(i=>i.Name))
                 {
                     this.lbImages.Items.Add(image);
                 }
@@ -261,7 +278,7 @@ namespace OpenStackAPIHelper
             {
                 var image = (Entities.ServerImage)this.lbImages.SelectedItem;
 
-                this.tbServerDetails.Text = string.Format("*********** Image **********\r\nName={0}\r\nID={1}\r\nLink={2}\r\n", image.Name, image.Id, image.Links[0].Href);
+                this.tbServerDetails.Text = string.Format("*********** Image **********\r\nName={0}\r\nID={1}\r\nLink={2}\r\n", image.Name, image.Id, image.SelfLink);
                 if (!string.IsNullOrEmpty(image.DetailJson))
                 {
                     this.tbServerDetails.Text += image.DetailJson;
@@ -282,7 +299,7 @@ namespace OpenStackAPIHelper
                 if (obj != null)
                 {
                     var image = (Entities.ServerImage)obj;
-                    string result = GetImageDetail(image.Id);
+                    string result = GetImageDetail(image);
                     image.DetailJson = FormatJson(result);
                     lbImages_SelectedIndexChanged(sender, e);
                 }
@@ -305,15 +322,26 @@ namespace OpenStackAPIHelper
             try
             {
                 var image = (Entities.ServerImage)this.lbImages.SelectedItem;
-                if (image == null) return;
+                
+                if (image == null || image.SelfLink == null) return;
                 switch (e.ClickedItem.Text)
                 {
                     case "Delete":
-                        this.tbDeleteUrl.Text = this.computeUrl + "/images/" + image.Id;
+                        this.tbDeleteUrl.Text = image.SelfLink;
                         this.tabControl1.SelectedTab = this.tabDelete;
                         this.tbDeleteUrl.Focus();
                         break;
-
+                    case "Change Metadata":
+                        this.tbPostUrl.Text = image.SelfLink + "/metadata";
+                        this.tbPostBody.Text = FormatJson("{\"metadata\":{\"SOME_LABEL\":\"SOME_VALUE\"}}");
+                        this.tabControl1.SelectedTab = this.tabPost;
+                        this.tbPostUrl.Focus();
+                        break;
+                    case "Create Server using...":
+                        this.tbPostUrl.Text = image.SelfLink + "/action";
+                        this.tabControl1.SelectedTab = this.tabPost;
+                        this.tbPostBody.Text = " not implemented yet. Sorry.  :( ";
+                        break;
                 }
             }
             catch (Exception ex)
@@ -329,11 +357,9 @@ namespace OpenStackAPIHelper
             {
                 this.Cursor = Cursors.WaitCursor;
                 System.Windows.Forms.Application.DoEvents();
-
-                LoadAuth();
-                var flavors = GetFlavors();
+                var flavors = GetAllFlavors();
                 this.lbFlavors.Items.Clear();
-                foreach (var flavor in flavors.FlavorList)
+                foreach (var flavor in flavors.OrderBy(f=>f.Region).ThenBy(f=>f.Name))
                 {
                     this.lbFlavors.Items.Add(flavor);
                 }
@@ -361,7 +387,7 @@ namespace OpenStackAPIHelper
             {
                 var flavor = (Entities.ServerImage)this.lbFlavors.SelectedItem;
 
-                this.tbServerDetails.Text = string.Format("^^^^^^^^^ Flavor ^^^^^^^^^^^^\r\nName={0}\r\nID={1}\r\nLink={2}\r\n", flavor.Name, flavor.Id, flavor.Links[0].Href);
+                this.tbServerDetails.Text = string.Format("^^^^^^^^^ Flavor ^^^^^^^^^^^^\r\nName={0}\r\nID={1}\r\nLink={2}\r\n", flavor.Name, flavor.Id, flavor.SelfLink);
                 if (!string.IsNullOrEmpty(flavor.DetailJson))
                 {
                     this.tbServerDetails.Text += flavor.DetailJson;
@@ -382,7 +408,7 @@ namespace OpenStackAPIHelper
                 if (obj != null)
                 {
                     var flavor = (Entities.ServerImage)obj;
-                    string result = GetFlavorDetail(flavor.Id);
+                    string result = GetImageDetail(flavor);
                     flavor.DetailJson = FormatJson(result);
                     lbFlavors_SelectedIndexChanged(sender, e);
                 }
@@ -568,9 +594,19 @@ namespace OpenStackAPIHelper
             return result;
         }
         #region ImagesAPI
-        private Entities.Images GetImages()
+        private IEnumerable<Entities.ServerImage> GetAllImages()
         {
-            string url = computeUrl + "/images";
+            foreach (string endpoint in this.computeUrl)
+            {
+                foreach (var image in GetImages(endpoint).ImageList)
+                {
+                    yield return image;
+                }
+            }
+        }
+        private Entities.Images GetImages(string baseUrl)
+        {
+            string url = baseUrl + "/images";
             var response = MakeRequest(null, url, "GET", this.Access.Token.tokenString);
             Entities.Images images = null;
             using (var responseStream = response.GetResponseStream())
@@ -579,18 +615,27 @@ namespace OpenStackAPIHelper
             }
             return images;
         }
-        private string GetImageDetail(string imageId)
+        private string GetImageDetail(Entities.ServerImage image)
         {
-            string url = computeUrl + "/images/" + imageId;
-            var response = MakeRequest(null, url, "GET", this.Access.Token.tokenString);
+            var response = MakeRequest(null, image.SelfLink, "GET", this.Access.Token.tokenString);
             string result = GetStringFromStream(response.GetResponseStream());
             return result;
         }
         #endregion
         #region Flavors API
-        private Entities.Flavors GetFlavors()
+        private IEnumerable<Entities.ServerImage> GetAllFlavors()
         {
-            string url = computeUrl + "/flavors";
+            foreach (string endpoint in this.computeUrl)
+            {
+                foreach (var flavor in GetFlavors(endpoint).FlavorList)
+                {
+                    yield return flavor;
+                }
+            }
+        }
+        private Entities.Flavors GetFlavors(string baseUrl)
+        {
+            string url = baseUrl + "/flavors";
             var response = MakeRequest(null, url, "GET", this.Access.Token.tokenString);
             Entities.Flavors flavors = null;
             using (var responseStream = response.GetResponseStream())
@@ -598,13 +643,6 @@ namespace OpenStackAPIHelper
                 flavors = DeserializeJson<Entities.Flavors>(responseStream);
             }
             return flavors;
-        }
-        private string GetFlavorDetail(string flavorId)
-        {
-            string url = computeUrl + "/flavors/" + flavorId;
-            var response = MakeRequest(null, url, "GET", this.Access.Token.tokenString);
-            string result = GetStringFromStream(response.GetResponseStream());
-            return result;
         }
         #endregion
         #region AuthAPI
@@ -845,16 +883,6 @@ namespace OpenStackAPIHelper
             return sb.ToString();
         }
 
-        
-
-        
-        
-        
-
-        
-
-
-        
         
     }
 }
